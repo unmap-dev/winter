@@ -1,5 +1,14 @@
 # @unmap/app-winter
 
+## 0.0.14
+
+### Patch Changes
+
+- Updated dependencies [51737c1]
+  - @unmap/sdk@0.32.1
+  - @unmap/maps@0.32.1
+  - @unmap/deck@0.32.1
+
 ## 0.0.13
 
 ### Patch Changes
