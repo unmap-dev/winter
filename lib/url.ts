@@ -1,5 +1,6 @@
 /**
- * The shareable link: `?area=<slug>` (such as `?area=nakiska`) opens on that ski area and `?lifts=3d` turns 3D lifts on; other
+ * The shareable link: `?area=<slug>` (such as `?area=nakiska`) opens on that ski area, `?lifts=3d` turns 3D lifts on and
+ * `?trees=3d` 3D trees; other
  * keys (such as `lang`) are kept. Pure functions; the app owns history. Unit-tested in
  * test/url.test.ts.
  */
@@ -15,12 +16,14 @@ export interface WinterState {
   area: string | null;
   /** Whether the picked area's lifts are drawn in 3D. */
   lifts3d: boolean;
+  /** Whether the woods are drawn as 3D trees. */
+  trees3d: boolean;
 }
 
 export function parseState(search: string): WinterState {
   const q = new URLSearchParams(search);
   const area = q.get("area");
-  return { area: area && AREA.test(area) ? area : null, lifts3d: q.get("lifts") === "3d" };
+  return { area: area && AREA.test(area) ? area : null, lifts3d: q.get("lifts") === "3d", trees3d: q.get("trees") === "3d" };
 }
 
 export function writeState(search: string, state: WinterState): string {
@@ -29,6 +32,8 @@ export function writeState(search: string, state: WinterState): string {
   else q.delete("area");
   if (state.lifts3d) q.set("lifts", "3d");
   else q.delete("lifts");
+  if (state.trees3d) q.set("trees", "3d");
+  else q.delete("trees");
   const s = q.toString();
   return s ? `?${s}` : "";
 }

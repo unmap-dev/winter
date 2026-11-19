@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { MountainSnowIcon } from "lucide-react";
+import { MountainSnowIcon, TreesIcon } from "lucide-react";
 import { SkiResortExplorer } from "@/components/ui/ski-resort-explorer";
 import { Toggle } from "@/components/ui/toggle";
 import { AppHeader } from "@/lib/kit/app-header";
@@ -12,9 +12,9 @@ import { MANIFEST } from "@/lib/manifest";
 import { TEXT } from "@/lib/text";
 import { parseState, writeState, type WinterState } from "@/lib/url";
 
-/** The area on screen and the 3D lifts switch, kept in the query string so a link opens on them. */
+/** The area on screen and the 3D lifts and trees switches, kept in the query string so a link opens on them. */
 function useWinterState(): [WinterState, (next: Partial<WinterState>) => void] {
-  const [state, setState] = useState<WinterState>({ area: null, lifts3d: false });
+  const [state, setState] = useState<WinterState>({ area: null, lifts3d: false, trees3d: false });
   useEffect(() => {
     // The URL only exists after mount in a static export.
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -32,8 +32,9 @@ function useWinterState(): [WinterState, (next: Partial<WinterState>) => void] {
 
 /**
  * Winter: the ski-resort-explorer block, full-bleed under the app header, with the page's language,
- * the picked area and the 3D lifts switch in the URL. Everything else (the list, the filters, the
- * area panel, the add-on gate, the OpenStreetMap credit and the disclaimer) is the block's own.
+ * the picked area and the 3D lifts and trees switches in the URL. Everything else (the list, the
+ * filters, the area panel, the add-on gate, the OpenStreetMap credit and the disclaimer) is the
+ * block's own. The 3D trees are the app's: drawn on the block's map from outside it.
  */
 export function WinterApp() {
   const [lang, setLang] = useLang();
@@ -49,17 +50,30 @@ export function WinterApp() {
         onLang={setLang}
         actions={
           API_KEY ? (
-            <Toggle
-              variant="outline"
-              size="sm"
-              pressed={state.lifts3d}
-              onPressedChange={(pressed: boolean) => update({ lifts3d: pressed })}
-              title={t.lifts3dHint}
-              data-lifts3d-toggle=""
-            >
-              <MountainSnowIcon data-icon="inline-start" />
-              {t.lifts3d}
-            </Toggle>
+            <>
+              <Toggle
+                variant="outline"
+                size="sm"
+                pressed={state.trees3d}
+                onPressedChange={(pressed: boolean) => update({ trees3d: pressed })}
+                title={t.trees3dHint}
+                data-trees3d-toggle=""
+              >
+                <TreesIcon data-icon="inline-start" />
+                {t.trees3d}
+              </Toggle>
+              <Toggle
+                variant="outline"
+                size="sm"
+                pressed={state.lifts3d}
+                onPressedChange={(pressed: boolean) => update({ lifts3d: pressed })}
+                title={t.lifts3dHint}
+                data-lifts3d-toggle=""
+              >
+                <MountainSnowIcon data-icon="inline-start" />
+                {t.lifts3d}
+              </Toggle>
+            </>
           ) : null
         }
       />
@@ -70,6 +84,7 @@ export function WinterApp() {
             gateway={GATEWAY}
             lang={lang}
             lifts3d={state.lifts3d}
+            trees3d={state.trees3d}
             area={state.area}
             onAreaChange={onAreaChange}
             className="h-full"

@@ -8,6 +8,7 @@ Everything on screen is a live Unmap response. The app ships no data file and no
 | Top, base and vertical; the aspect of the runs | Sampled at build time from Unmap's terrain release, the same DEM the map's 3D terrain draws | Derived from the OpenStreetMap geometry above, so ODbL; terrain credited with the basemap | as above |
 | 3D lifts: stations, pylons and cable heights | `/ski/areas/{id}/lifts-3d`: OpenStreetMap lift geometry with heights baked from the terrain release each file names (`terrain_release`) | ODbL | as above |
 | Drive time from the nearest city | Computed at build time with Unmap's routing (`/matrix`, OpenStreetMap roads) from the nearest of the three closest census metropolitan areas of 100,000 or more; empty when none is within reach | ODbL (roads), Statistics Canada (city list) | as above |
+| 3D trees: where they stand | The woods (`landuse` `wood` and `forest`), water, buildings, roads and the ski runs and lifts in the vector tiles the map has loaded; each tree's ground height from the drawn terrain. Each tree's position inside the woods, its height and its shape are made up by `@unmap/deck`, not mapped | ODbL (the woods and the cleared lines) | MapLibre's attribution control on the map |
 | Basemap and 3D terrain | Unmap's `winter` style, vector tiles and terrain | © unmap © OpenStreetMap contributors; terrain from Mapterhorn and its suppliers | MapLibre's attribution control on the map |
 
 ## What the ODbL asks of you
@@ -24,5 +25,7 @@ the ODbL too. Unmap keeps the OSM-derived layer separable from everything else f
 - **Coverage follows OpenStreetMap.** A small hill nobody has mapped is not in the list, and an
   area mapped without lifts or runs has no elevation numbers ("Not sampled").
 - **Ski areas in Canada only.**
+- **The 3D trees are a picture of woodland, not a tree inventory.** OpenStreetMap maps where the
+  woods are, not where each tree stands, its height or its species.
 
 Gaps are shown as gaps: a missing number says so, and the app never fills one in.

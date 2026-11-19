@@ -36,13 +36,23 @@ vi.mock("@/components/ui/map", () => ({
     return <div data-testid="map">{props.children as ReactNode}</div>;
   },
 }));
-vi.mock("@/lib/map-context", () => ({ useMap: () => mocks.map, useMapReady: () => true }));
+vi.mock("@/lib/map-context", () => ({
+  useMap: () => mocks.map,
+  useMapReady: () => true,
+  useMapGeneration: () => 1,
+}));
+// The 3D trees: placement and drawing are tested in @unmap/deck.
+const trees = vi.hoisted(() => ({ show: vi.fn(), stop: vi.fn() }));
 // deck.gl, at the block's dynamic-import boundary.
 const deck = vi.hoisted(() => ({ fetchLifts3d: vi.fn(), overlays: [] as Array<{ remove: () => void }> }));
 vi.mock("@unmap/deck", () => ({
   fetchLifts3d: deck.fetchLifts3d,
   liftCablesLayer: (lifts: unknown, options?: { id?: string }) => ({ id: options?.id ?? "unmap-lift-cables", lifts }),
   LIFT_COLORS: { default: [66, 66, 66, 255] },
+  showTrees: (map: unknown) => {
+    trees.show(map);
+    return trees.stop;
+  },
   createDeckOverlay: () => {
     const overlay = { remove: vi.fn() };
     deck.overlays.push(overlay);
@@ -99,6 +109,8 @@ beforeEach(() => {
   deck.fetchLifts3d.mockReset();
   deck.fetchLifts3d.mockResolvedValue({ area_id: AREA.id, lifts: [] });
   deck.overlays.length = 0;
+  trees.show.mockReset();
+  trees.stop.mockReset();
 });
 afterEach(() => {
   cleanup();
@@ -162,6 +174,37 @@ describe("Winter", () => {
     expect(deck.overlays).toHaveLength(1);
   });
 
+  it("turns 3D trees on from the header, on the block's map, and keeps it in the link", async () => {
+    await open("?area=sunshine-village");
+    const toggle = screen.getByRole("button", { name: "3D trees" });
+    expect(toggle.getAttribute("aria-pressed")).toBe("false");
+    expect(trees.show).not.toHaveBeenCalled();
+    await act(async () => fireEvent.click(toggle));
+    await act(async () => {});
+    expect(toggle.getAttribute("aria-pressed")).toBe("true");
+    expect(window.location.search).toBe("?area=sunshine-village&trees=3d");
+    expect(trees.show).toHaveBeenCalledWith(mocks.map);
+    // Trees need no antialiased map, so turning them on does not rebuild it.
+    expect(mocks.props.map).toMatchObject({ maplibre: { maxPitch: 85 } });
+    expect(mocks.props.map).not.toMatchObject({ maplibre: { canvasContextAttributes: { antialias: true } } });
+
+    await act(async () => fireEvent.click(toggle));
+    expect(trees.stop).toHaveBeenCalled();
+    expect(window.location.search).toBe("?area=sunshine-village");
+  });
+
+  it("draws 3D trees and 3D lifts together", async () => {
+    // Opened with trees from the link, then lifts from the header. (Both starting in the same
+    // instant stalls vitest's mocked dynamic import; the browser loads the chunk once for both.)
+    await open("?area=osm-way-474288286&trees=3d");
+    expect(screen.getByRole("button", { name: "3D trees" }).getAttribute("aria-pressed")).toBe("true");
+    await act(async () => fireEvent.click(screen.getByRole("button", { name: "3D lifts" })));
+    await act(async () => {});
+    expect(new URLSearchParams(window.location.search).get("lifts")).toBe("3d");
+    expect(trees.show).toHaveBeenCalled();
+    expect(deck.overlays).toHaveLength(1);
+  });
+
   it("explains a key without the Ski add-on instead of failing", async () => {
     mocks.areas.mockRejectedValueOnce({ status: 403, code: "addon_required", addon: "addon-ski" });
     await open("?area=osm-way-474288286");
@@ -174,6 +217,7 @@ describe("Winter", () => {
     await open("?lang=fr");
     expect(screen.getByRole("heading", { name: "Explorateur de stations de ski" })).toBeTruthy();
     expect(screen.getByRole("button", { name: "Remontées 3D" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Arbres 3D" })).toBeTruthy();
     expect(mocks.props.map).toMatchObject({ lang: "fr" });
     expect(screen.getByTestId("ski-credits").textContent).toContain("pas un avis sur les avalanches");
   });
@@ -184,5 +228,6 @@ describe("Winter", () => {
     expect(screen.getByText("This app needs an Unmap API key")).toBeTruthy();
     expect(mocks.areas).not.toHaveBeenCalled();
     expect(screen.queryByRole("button", { name: "3D lifts" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "3D trees" })).toBeNull();
   });
 });

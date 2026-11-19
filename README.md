@@ -54,6 +54,7 @@ domain) in the dashboard. Any static host works: `out/` is plain files.
 | --- | --- |
 | `?area=sunshine-village` | opens on that ski area, named by a slug of its name (an area id from `/ski/areas` also works) |
 | `?lifts=3d` | 3D lifts on |
+| `?trees=3d` | 3D trees on |
 | `?lang=fr` | French |
 
 ## What it calls
@@ -63,12 +64,21 @@ domain) in the dashboard. Any static host works: `out/` is plain files.
 - With 3D lifts on, `GET /ski/areas/{id}/lifts-3d` once per area you pick. deck.gl is downloaded
   only then: with 3D lifts off it is never loaded. Turning 3D lifts on or off recreates the map,
   because antialiasing can only be chosen when the map is created.
+- With 3D trees on, nothing more: the trees are placed from the vector tiles and terrain the map
+  has already loaded. deck.gl is downloaded when they are first turned on.
 - The map's own style, tile and terrain requests.
 
 ## How it is built
 
-- `components/winter/winter-app.tsx`: the header (with the 3D lifts switch and the language
-  switch), the URL state, and the `ski-resort-explorer` block filling the rest of the page.
+- `components/winter/winter-app.tsx`: the header (with the 3D trees, 3D lifts and language
+  switches), the URL state, and the `ski-resort-explorer` block filling the rest of the page.
+- The 3D trees are the block's `trees3d` prop, drawn by `showTrees` from `@unmap/deck`. From zoom
+  13.5 in, within 4 km of the camera's focus, every z14 tile's woods (`landuse` `wood` and
+  `forest`) are rasterised into a mask, with water and buildings cut out and a strip cleared along
+  roads, rivers, runs and lifts; a seeded jittered grid puts a low-poly conifer (21 triangles) in
+  each cell on the mask, at its height on the drawn terrain, through deck.gl's `SimpleMeshLayer`.
+  The same place gets the same trees on every visit. At most 180,000 trees (60,000 on a touch
+  screen).
 - `lib/url.ts`: the shareable link, as pure functions.
 - `components/ui/` and `lib/map-context.tsx`: the registry items (`ski-resort-explorer`, `map`,
   `map-context`) and stock shadcn primitives, copied in **unmodified**. `lib/kit/`: the shared app
