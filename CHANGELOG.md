@@ -1,5 +1,13 @@
 # @unmap/app-winter
 
+## 0.0.17
+
+### Patch Changes
+
+- @unmap/maps@0.34.0
+- @unmap/sdk@0.34.0
+- @unmap/deck@0.34.0
+
 ## 0.0.16
 
 ### Patch Changes
