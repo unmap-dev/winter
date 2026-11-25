@@ -80,7 +80,7 @@ export const SKI_COPY = {
     search: "Search ski areas",
     searchPlaceholder: "Whistler, Mont-Sainte-Anne...",
     province: "Province or territory",
-    allProvinces: "All provinces and territories",
+    allProvinces: "All of Canada and the US",
     activity: "Activity",
     activities: { all: "All", downhill: "Downhill", nordic: "Nordic" },
     list: "Ski areas",
@@ -99,6 +99,7 @@ export const SKI_COPY = {
     lifts: "Lifts",
     drive: "Drive",
     noDrive: "No city within reach",
+    noDriveUs: "From Canadian cities only",
     driveFrom: (time: string, from: string) => `${time} from ${from}`,
     aspect: "Aspect",
     aspectCaption: "Share of downhill run length facing each direction.",
@@ -223,7 +224,7 @@ export const SKI_COPY = {
     search: "Chercher une station",
     searchPlaceholder: "Whistler, Mont-Sainte-Anne...",
     province: "Province ou territoire",
-    allProvinces: "Toutes les provinces et tous les territoires",
+    allProvinces: "Tout le Canada et les États-Unis",
     activity: "Activité",
     activities: { all: "Toutes", downhill: "Ski alpin", nordic: "Ski de fond" },
     list: "Stations de ski",
@@ -242,6 +243,7 @@ export const SKI_COPY = {
     lifts: "Remontées",
     drive: "En voiture",
     noDrive: "Aucune ville à portée",
+    noDriveUs: "Depuis les villes canadiennes seulement",
     driveFrom: (time: string, from: string) => `${time} de ${from}`,
     aspect: "Orientation",
     aspectCaption: "Part de la longueur des pistes de ski alpin orientée dans chaque direction.",
@@ -524,6 +526,8 @@ export function statRows(
     runs: { count: number; downhill_km: number; nordic_km: number };
     lifts: { count: number };
     drive: { from: string; minutes: number } | null;
+    /** A US area has no drive time: drives are routed from Canadian cities on the Canadian road graph. */
+    country?: string;
   },
   lang: SkiLang,
 ): Array<[string, string]> {
@@ -537,7 +541,7 @@ export function statRows(
     [copy.downhillKm, formatKm(area.runs.downhill_km, lang)],
     [copy.nordicKm, formatKm(area.runs.nordic_km, lang)],
     [copy.lifts, count(area.lifts.count)],
-    [copy.drive, formatDrive(area.drive, lang) ?? copy.noDrive],
+    [copy.drive, formatDrive(area.drive, lang) ?? (area.country === "US" ? copy.noDriveUs : copy.noDrive)],
   ];
 }
 

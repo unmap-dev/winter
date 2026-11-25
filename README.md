@@ -1,15 +1,16 @@
 # Ski Area Explorer, built with Unmap
 
-Every ski area in Canada on the `winter` style over 3D terrain: search by name, filter by
-province or territory and by downhill or nordic, and pick an area for its vertical, top and base,
-runs, lifts, the way its runs face and the drive time from the nearest city. Turn on **3D lifts**
+Every ski area in Canada and the US on the `winter` style over 3D terrain, opening on Canada:
+search by name, filter by Canadian province or territory and by downhill or nordic, and pick an
+area for its vertical, top and base, runs, lifts, the way its runs face and, in Canada, the drive
+time from the nearest city. Turn on **3D lifts**
 to draw the picked area's lift cables on its terrain. Share a link to an area. One of the
 [Unmap apps](https://unmap.dev/apps); live at
 [apps.unmap.dev/winter](https://apps.unmap.dev/winter/).
 
 The ski data is **real open data**: ski areas, runs and lifts from OpenStreetMap, served by
 Unmap's Ski add-on under the Open Database Licence (ODbL), with elevations sampled from Unmap's
-terrain and drive times from Unmap's routing (see [`DATA_SOURCES.md`](DATA_SOURCES.md)). The app
+terrain and Canadian drive times from Unmap's routing (see [`DATA_SOURCES.md`](DATA_SOURCES.md)). The app
 has no data of its own and invents none. The panel credits OpenStreetMap and the licence wherever
 the data is on screen.
 

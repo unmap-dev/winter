@@ -1,8 +1,8 @@
 {
   "name": "unmap-winter",
-  "version": "0.0.19",
+  "version": "0.0.22",
   "private": true,
-  "description": "Winter: every ski area in Canada on 3D terrain, built with Unmap. An Unmap app and a starter you can clone.",
+  "description": "Winter: every ski area in Canada and the US on 3D terrain, built with Unmap. An Unmap app and a starter you can clone.",
   "scripts": {
     "dev": "node scripts/copy-maplibre-worker.mjs && next dev --port 3209",
     "build": "node scripts/copy-maplibre-worker.mjs && next build",
@@ -20,9 +20,9 @@
     "@deck.gl/maplibre": "~9.4.0",
     "@deck.gl/mesh-layers": "~9.4.1",
     "@luma.gl/core": "~9.4.0",
-    "@unmap/deck": "0.36.0",
-    "@unmap/maps": "0.36.0",
-    "@unmap/sdk": "0.36.0",
+    "@unmap/deck": "0.37.2",
+    "@unmap/maps": "0.37.2",
+    "@unmap/sdk": "0.37.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "geist": "^1.7.2",

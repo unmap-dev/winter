@@ -8,8 +8,8 @@ export const MANIFEST: AppManifest = {
   slug: "winter",
   name: { en: "Ski Area Explorer", fr: "Explorateur de stations de ski" },
   tagline: {
-    en: "Every ski area in Canada on 3D terrain: vertical, runs, lifts, aspect and drive time, with lifts in 3D.",
-    fr: "Toutes les stations de ski du Canada sur relief 3D : dénivelé, pistes, remontées, orientation et temps de route, avec remontées en 3D.",
+    en: "Every ski area in Canada and the US on 3D terrain: vertical, runs, lifts, aspect and drive time, with lifts in 3D.",
+    fr: "Toutes les stations de ski du Canada et des États-Unis sur relief 3D : dénivelé, pistes, remontées, orientation et temps de route, avec remontées en 3D.",
   },
   services: [
     {

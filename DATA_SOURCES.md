@@ -24,7 +24,7 @@ the ODbL too. Unmap keeps the OSM-derived layer separable from everything else f
 - **No avalanche or safety information**, and no ratings or route advice of any kind.
 - **Coverage follows OpenStreetMap.** A small hill nobody has mapped is not in the list, and an
   area mapped without lifts or runs has no elevation numbers ("Not sampled").
-- **Ski areas in Canada only.**
+- **Ski areas in Canada and the US only.** Drive times are Canadian: a US area has none.
 - **The 3D trees are a picture of woodland, not a tree inventory.** OpenStreetMap maps where the
   woods are, not where each tree stands, its height or its species.
 

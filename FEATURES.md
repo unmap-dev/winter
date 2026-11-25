@@ -6,11 +6,11 @@ What the Ski Area Explorer does, which Unmap API does it, and what it deliberate
 
 | Feature | How | Unmap |
 | --- | --- | --- |
-| All of Canada on 3D terrain | registry `map` on the `winter` style with terrain, opening on the whole country; the `ski` overlay of runs and lifts once the key holds the Ski add-on | Maps API (`/styles/winter.json?terrain=on&overlays=ski`, `/tiles`, `/terrain`) |
-| Ski area list | every ski area, with its place and vertical | Ski (`GET /ski/areas`) |
+| Canada and the US on 3D terrain | registry `map` on the `winter` style with terrain, opening on all of Canada; the `ski` overlay of runs and lifts once the key holds the Ski add-on | Maps API (`/styles/winter.json?terrain=on&overlays=ski`, `/tiles`, `/terrain`) |
+| Ski area list | every ski area in Canada and the US, with its place and vertical | Ski (`GET /ski/areas`) |
 | Search | by name, accents and case ignored, after a pause in typing | Ski (`?q=`) |
-| Province and activity filters | a province or territory; downhill, nordic or both | Ski (`?province=`, `?activity=`) |
-| Area page | picking an area flies to it and tilts the camera onto its terrain; the panel shows vertical, top and base, runs (count, downhill and nordic km), lifts, an eight-direction aspect readout, the drive time from the nearest city, and its websites | — (the list already holds it) |
+| Province and activity filters | a Canadian province or territory; downhill, nordic or both | Ski (`?region=`, `?activity=`) |
+| Area page | picking an area flies to it and tilts the camera onto its terrain; the panel shows vertical, top and base, runs (count, downhill and nordic km), lifts, an eight-direction aspect readout, the drive time from the nearest city (Canadian areas only; a US area has none), and its websites | — (the list already holds it) |
 | 3D lifts | the header's "3D lifts" switch draws the picked area's lift cables at heights baked from the terrain release, with deck.gl in the map's own WebGL context; deck.gl is loaded only when it is on | Ski (`GET /ski/areas/{id}/lifts-3d`) |
 | 3D trees | the header's "3D trees" switch draws the woods as low-poly conifers standing on the terrain, from zoom 13.5 in and near the camera, kept off runs, lifts, roads, water and buildings; deck.gl is loaded only when it is on | — (the vector tiles and terrain the map already loaded) |
 | Shareable link | `?area=<id>`, `?lifts=3d`, `?trees=3d` and `?lang=fr` | — |
@@ -33,4 +33,4 @@ What the Ski Area Explorer does, which Unmap API does it, and what it deliberate
 ## Not goals
 
 Live lift, run, grooming or snow status; avalanche danger, ATES or any safety guidance; route
-recommendations; ski areas outside Canada.
+recommendations; ski areas outside Canada and the US.

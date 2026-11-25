@@ -8,7 +8,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Ski Area Explorer · Unmap app",
   description:
-    "Every ski area in Canada on 3D terrain, built with Unmap and the Unmap component registry: search, province filter, vertical, runs, lifts, aspect and drive time, and lift cables in 3D. Ski data © OpenStreetMap contributors (ODbL).",
+    "Every ski area in Canada and the US on 3D terrain, built with Unmap and the Unmap component registry: search, province filter, vertical, runs, lifts, aspect and drive time, and lift cables in 3D. Ski data © OpenStreetMap contributors (ODbL).",
 };
 
 export const viewport: Viewport = {
